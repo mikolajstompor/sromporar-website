@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>STOMPÓR ART COMPANY — Admin Panel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: radial-gradient(circle at 50% -20%, #5a4837 0%, #3a2f27 30%, #1a1410 70%, #0f0c0a 100%);
+      color: #d4c5a0;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      letter-spacing: 0.05em;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* LOGIN */
+    .login-screen {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 50% -20%, #5a4837 0%, #3a2f27 30%, #1a1410 70%, #0f0c0a 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .login-screen.hidden {
+      display: none;
+    }
+
+    .login-box {
+      background: rgba(42, 46, 58, 0.9);
+      border: 2px solid #d4c5a0;
+      padding: 40px;
+      border-radius: 8px;
+      text-align: center;
+      width: 90%;
+      max-width: 400px;
+    }
+
+    .login-box h1 {
+      font-size: 2rem;
+      margin-bottom: 30px;
+      letter-spacing: 0.1em;
+    }
+
+    .login-box input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      background: rgba(26, 29, 36, 0.8);
+      border: 1px solid rgba(212, 197, 160, 0.3);
+      color: #d4c5a0;
+      border-radius: 4px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1rem;
+    }
+
+    .login-box input::placeholder {
+      color: rgba(212, 197, 160, 0.5);
+    }
+
+    .login-box button {
+      width: 100%;
+      padding: 12px;
+      background: #d4c5a0;
+      color: #1a1d24;
+      border: none;
+      border-radius: 4px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: 0.3s ease;
+    }
+
+    .login-box button:hover {
+      background: #e8d9b8;
+    }
+
+    /* HEADER */
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      background: rgba(26, 29, 36, 0.95);
+      border-bottom: 2px solid #d4c5a0;
+      border-radius: 8px;
+      margin-bottom: 30px;
+    }
+
+    .admin-header h1 {
+      margin: 0;
+      font-size: 1.8rem;
+      letter-spacing: 0.1em;
+    }
+
+    .logout-btn {
+      background: #ff6b6b;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 500;
+      transition: 0.3s ease;
+    }
+
+    .logout-btn:hover {
+      background: #ff5252;
+    }
+
+    /* TABS */
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 30px;
+      border-bottom: 1px solid rgba(212, 197, 160, 0.2);
+      padding-bottom: 10px;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: 2px solid transparent;
+      color: #d4c5a0;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 500;
+      border-radius: 4px 4px 0 0;
+      transition: 0.3s ease;
+    }
+
+    .tab-btn:hover {
+      border-color: #d4c5a0;
+    }
+
+    .tab-btn.active {
+      background: #d4c5a0;
+      color: #1a1d24;
+      border-color: #d4c5a0;
+    }
+
+    /* CONTENT */
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* FORM */
+    .form-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 500;
+      margin-bottom: 8px;
+      letter-spacing: 0.05em;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 12px;
+      background: rgba(26, 29, 36, 0.8);
+      border: 1px solid rgba(212, 197, 160, 0.3);
+      color: #d4c5a0;
+      border-radius: 4px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.95rem;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 12px;
+      background: #d4c5a0;
+      color: #1a1d24;
+      border: none;
+      border-radius: 4px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: 0.3s ease;
+    }
+
+    .submit-btn:hover {
+      background: #e8d9b8;
+    }
+
+    /* WORKS LIST */
+    .works-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .work-card {
+      background: rgba(42, 46, 58, 0.6);
+      border: 1px solid rgba(212, 197, 160, 0.2);
+      border-radius: 4px;
+      padding: 15px;
+      transition: 0.3s ease;
+    }
+
+    .work-card:hover {
+      border-color: #d4c5a0;
+    }
+
+    .work-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 4px;
+      margin-bottom: 10px;
+    }
+
+    .work-card h3 {
+      margin: 10px 0;
+      font-size: 1.1rem;
+    }
+
+    .work-card p {
+      margin: 5px 0;
+      font-size: 0.9rem;
+      opacity: 0.85;
+    }
+
+    .work-card-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .edit-btn, .delete-btn {
+      flex: 1;
+      padding: 8px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 500;
+      transition: 0.3s ease;
+    }
+
+    .edit-btn {
+      background: #4a9eff;
+      color: white;
+    }
+
+    .edit-btn:hover {
+      background: #357abd;
+    }
+
+    .delete-btn {
+      background: #ff6b6b;
+      color: white;
+    }
+
+    .delete-btn:hover {
+      background: #ff5252;
+    }
+
+    .success-msg {
+      background: rgba(76, 175, 80, 0.2);
+      border: 1px solid #4caf50;
+      color: #a8e6a8;
+      padding: 15px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    .success-msg.show {
+      display: block;
+    }
+
+    .form-wrapper {
+      background: rgba(42, 46, 58, 0.6);
+      border: 1px solid rgba(212, 197, 160, 0.2);
+      padding: 30px;
+      border-radius: 4px;
+      max-width: 600px;
+    }
+
+    .price-input {
+      display: flex;
+      gap: 10px;
+    }
+
+    .price-input input {
+      flex: 1;
+    }
+
+    .price-input span {
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div id="loginScreen" class="login-screen">
+  <div class="login-box">
+    <h1>ADMIN PANEL</h1>
+    <input type="password" id="password" placeholder="Hasło" />
+    <button onclick="login()">Zaloguj się</button>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="adminPanel" class="admin-panel hidden">
+  <div class="container">
+    <div class="admin-header">
+      <h1>STOMPÓR ART COMPANY - Admin Panel</h1>
+      <button class="logout-btn" onclick="logout()">Wyloguj się</button>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('add')">➕ Dodaj Pracę</button>
+      <button class="tab-btn" onclick="switchTab('edit')">📝 Edytuj Prace</button>
+    </div>
+
+    <!-- TAB: ADD WORK -->
+    <div id="addTab" class="tab-content active">
+      <div class="form-wrapper">
+        <h2>Dodaj Nową Pracę</h2>
+        <div id="successMsg" class="success-msg">✅ Praca dodana pomyślnie!</div>
+        
+        <form id="addWorkForm">
+          <div class="form-group">
+            <label for="workTitle">Nazwa pracy:</label>
+            <input type="text" id="workTitle" required placeholder="np. Zachód słońca">
+          </div>
+
+          <div class="form-group">
+            <label for="workDescription">Opis:</label>
+            <textarea id="workDescription" required placeholder="Opisz swoją pracę..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="workCategory">Kategoria:</label>
+            <select id="workCategory" required>
+              <option value="">Wybierz kategorię</option>
+              <option value="painting">Malarstwo</option>
+              <option value="drawing">Rysunek</option>
+              <option value="photo">Fotografia</option>
+              <option value="digital">Prace Cyfrowe</option>
+              <option value="sculpture">Rzeźba</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="workPrice">Cena (PLN):</label>
+            <div class="price-input">
+              <input type="number" id="workPrice" required placeholder="250" min="10">
+              <span>PLN</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="workImage">Link do zdjęcia (URL):</label>
+            <input type="url" id="workImage" required placeholder="https://example.com/image.jpg">
+          </div>
+
+          <div class="form-group">
+            <label for="workSize">Rozmiar:</label>
+            <input type="text" id="workSize" placeholder="np. 50x70 cm">
+          </div>
+
+          <button type="submit" class="submit-btn">Dodaj Pracę</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- TAB: EDIT WORKS -->
+    <div id="editTab" class="tab-content">
+      <h2>Moje Prace</h2>
+      <div id="worksContainer" class="works-grid"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const ADMIN_PASSWORD = "admin123"; // Zmień to hasło!
+let works = JSON.parse(localStorage.getItem('adminWorks')) || [];
+
+// LOGIN
+function login() {
+  const password = document.getElementById('password').value;
+  if (password === ADMIN_PASSWORD) {
+    document.getElementById('loginScreen').classList.add('hidden');
+    document.getElementById('adminPanel').classList.remove('hidden');
+    renderWorks();
+  } else {
+    alert('❌ Hasło jest niepoprawne!');
+  }
+}
+
+function logout() {
+  document.getElementById('loginScreen').classList.remove('hidden');
+  document.getElementById('adminPanel').classList.add('hidden');
+  document.getElementById('password').value = '';
+}
+
+// TABS
+function switchTab(tab) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  
+  if (tab === 'add') {
+    document.getElementById('addTab').classList.add('active');
+    document.querySelectorAll('.tab-btn')[0].classList.add('active');
+  } else {
+    document.getElementById('editTab').classList.add('active');
+    document.querySelectorAll('.tab-btn')[1].classList.add('active');
+    renderWorks();
+  }
+}
+
+// ADD WORK
+document.getElementById('addWorkForm')?.addEventListener('submit', (e) => {
+  e.preventDefault();
+  
+  const newWork = {
+    id: Date.now(),
+    title: document.getElementById('workTitle').value,
+    description: document.getElementById('workDescription').value,
+    category: document.getElementById('workCategory').value,
+    price: parseFloat(document.getElementById('workPrice').value),
+    image: document.getElementById('workImage').value,
+    size: document.getElementById('workSize').value
+  };
+  
+  works.push(newWork);
+  localStorage.setItem('adminWorks', JSON.stringify(works));
+  
+  // POKAŻ KOMUNIKAT
+  const msg = document.getElementById('successMsg');
+  msg.classList.add('show');
+  setTimeout(() => msg.classList.remove('show'), 3000);
+  
+  // WYCZYŚĆ FORMULARZ
+  document.getElementById('addWorkForm').reset();
+});
+
+// RENDER WORKS
+function renderWorks() {
+  const container = document.getElementById('worksContainer');
+  
+  if (works.length === 0) {
+    container.innerHTML = '<p>Brak prac. Dodaj pierwszą pracę!</p>';
+    return;
+  }
+  
+  container.innerHTML = works.map(work => `
+    <div class="work-card">
+      <img src="${work.image}" alt="${work.title}" onerror="this.src='https://via.placeholder.com/300?text=Brak+zdjęcia'">
+      <h3>${work.title}</h3>
+      <p><strong>Kategoria:</strong> ${work.category}</p>
+      <p><strong>Cena:</strong> ${work.price} PLN</p>
+      <p><strong>Opis:</strong> ${work.description}</p>
+      ${work.size ? `<p><strong>Rozmiar:</strong> ${work.size}</p>` : ''}
+      <div class="work-card-actions">
+        <button class="edit-btn" onclick="editWork(${work.id})">✏️ Edytuj</button>
+        <button class="delete-btn" onclick="deleteWork(${work.id})">🗑️ Usuń</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+// DELETE WORK
+function deleteWork(id) {
+  if (confirm('Czy na pewno chcesz usunąć tę pracę?')) {
+    works = works.filter(w => w.id !== id);
+    localStorage.setItem('adminWorks', JSON.stringify(works));
+    renderWorks();
+  }
+}
+
+// EDIT WORK (prosty variant - można rozwinąć)
+function editWork(id) {
+  alert('Funkcja edycji będzie niedługo dostępna!');
+}
+
+// INITIAL
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('password').focus();
+});
+</script>
+
+</body>
+</html>
