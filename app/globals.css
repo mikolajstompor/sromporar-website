@@ -1,0 +1,182 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+:root {
+  --dark-graphite: #2C1810;
+  --light-graphite: #3D2817;
+  --gold: #FFD700;
+  --bronze: #CD7F32;
+  --straw: #F4E4A6;
+  --straw-light: #FFF8DC;
+  --warm-orange: #FF8C00;
+  --warm-red: #DC143C;
+  --warm-brown: #8B4513;
+  --cream: #FFFDD0;
+  --ash-dark: #1C1C1C;
+  --ash-medium: #2F2F2F;
+  --ash-light: #404040;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #2C1810 0%, #3D2817 30%, #8B4513 70%, #2C1810 100%);
+  min-height: 100vh;
+  color: #FFFFFF;
+}
+
+.font-space {
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.font-inter {
+  font-family: 'Inter', sans-serif;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(44, 24, 16, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #D4AF37, #F4E4A6);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #F4E4A6, #D4AF37);
+}
+
+/* Glow Effects */
+.straw-glow {
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 0 40px rgba(255, 140, 0, 0.6);
+  color: var(--gold);
+}
+
+.golden-glow {
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.8), 0 0 20px rgba(212, 175, 55, 0.6);
+  color: #F4E4A6;
+}
+
+.text-glow {
+  transition: all 0.3s ease;
+  color: #E5E4E2;
+}
+
+.text-glow:hover {
+  text-shadow: 0 0 10px rgba(229, 228, 226, 0.8), 0 0 20px rgba(229, 228, 226, 0.6), 0 0 30px rgba(229, 228, 226, 0.4);
+  color: #F8F8FF;
+}
+
+/* Animations */
+.pulse-straw {
+  animation: pulseStraw 3s ease-in-out infinite;
+}
+
+@keyframes pulseStraw {
+  0%, 100% { opacity: 0.8; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.02); }
+}
+
+.fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp 0.8s ease forwards;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Art Cards */
+.art-card {
+  background: linear-gradient(145deg, #0A0B0A, #151615);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  transition: all 0.4s ease;
+}
+
+.art-card:hover {
+  border-color: rgba(212, 175, 55, 0.6);
+  box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
+  transform: translateY(-5px) scale(1.02);
+}
+
+/* Floating Particles */
+.floating-particles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.particle {
+  position: absolute;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.8) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: float 8s infinite linear;
+}
+
+@keyframes float {
+  0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+}
+
+/* Admin Panel Styles */
+.admin-card {
+  @apply bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700 rounded-lg p-6 shadow-lg;
+}
+
+.admin-input {
+  @apply w-full px-4 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-amber-500;
+}
+
+.admin-button {
+  @apply px-6 py-2 bg-gradient-to-r from-amber-500 to-yellow-500 text-black font-semibold rounded-lg hover:from-amber-600 hover:to-yellow-600 transition-all duration-300;
+}
+
+.admin-button-secondary {
+  @apply px-6 py-2 bg-gray-700 text-white font-semibold rounded-lg hover:bg-gray-600 transition-all duration-300;
+}
+
+.admin-button-danger {
+  @apply px-6 py-2 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition-all duration-300;
+}
+
+/* Music Player */
+.music-player {
+  @apply bg-gradient-to-br from-gray-900 to-black border border-amber-500 rounded-lg p-4 shadow-2xl;
+}
+
+/* Live Preview */
+.preview-mode {
+  @apply border-4 border-dashed border-blue-500 relative;
+}
+
+.preview-mode::after {
+  content: 'PREVIEW MODE';
+  @apply absolute top-0 right-0 bg-blue-500 text-white px-3 py-1 text-xs font-bold;
+}
